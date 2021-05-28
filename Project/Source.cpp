@@ -4,10 +4,11 @@
 #include <NTL/ZZ_pEXFactoring.h>
 
 NTL_CLIENT
-using namespace std;
 
 string polynomialToString(ZZ_pX p) {
+
 	stringstream ss;
+
 	for (int i = deg(p); i >= 0; i--) {
 		if (p[i] != 0) {
 			if (i != deg(p)) {
@@ -30,10 +31,14 @@ string polynomialToString(ZZ_pX p) {
 			}
 		}
 	}
+
 	return ss.str();
 }
+
 string polynomialToString(vec_pair_ZZ_pEX_long p) {
+
 	stringstream ss;
+
 	for (int i = 0; i < p.length(); i++) {
 		if (i != 0) {
 			cout << " * ";
@@ -41,7 +46,6 @@ string polynomialToString(vec_pair_ZZ_pEX_long p) {
 		cout << "(";
 		pair_ZZ_pEX_long a = p.get(i);
 		ZZ_pEX pex = a.a;
-		//cout << a.a;
 		for (int j = deg(pex); j >= 0; j--) {
 			ZZ_pE pe = pex[j];
 			ZZ_pX px = rep(pe);
@@ -76,18 +80,28 @@ string polynomialToString(vec_pair_ZZ_pEX_long p) {
 			cout << "^" << a.b;
 		}
 	}
+
 	return ss.str();
 }
 
 bool PolynomialFactorization() {
 
-	// Enter prime number
 	ZZ prime_number;
 	ZZ_pX polynom;
 
+	// Enter prime number
 	do {
+
 		cout << "   Enter prime number: ";
 		cin >> prime_number;
+		while (std::cin.fail())
+		{
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			cout << "   Enter prime number: ";
+			std::cin >> prime_number;
+		}
+		
 	} while (!ProbPrime(prime_number));
 
 	ZZ_p::init(prime_number);	// define GF(prime_number)
@@ -95,25 +109,34 @@ bool PolynomialFactorization() {
 	// Enter n
 	long n;
 	do {
+
 		cout << "   Enter n: ";
 		cin >> n;
+		while (std::cin.fail())
+		{
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			cout << "   Enter n: ";
+			cin >> n;
+		}
+
 	} while (n < 1);
 
-	BuildIrred(polynom, n);		// generate an irreducible polynomial P of degree n over GF(prime_number)
-	//cout << polynom << endl;
+	// Generate an irreducible polynomial P of degree n over GF(prime_number)
+	BuildIrred(polynom, n);		
 
-	ZZ_pE::init(polynom);		// define GF(prime_number^n)
+	// Define GF(prime_number^n)
+	ZZ_pE::init(polynom);		
 
 	cout << "\n   GF(" << prime_number << "^" << n << ")/(" << polynomialToString(polynom) << ")" << endl << endl;
 
 	cout << endl;
-	cout << "   Help: [2 1 1] = 2 + x + x^2" << endl << endl;
+	cout << "   -- Input help: [2 1 1] = 2 + x + x^2 --" << endl << endl;
 
 	// Enter polynom
 	ZZ_pX input_polynom;
 	cout << "   Enter polynomial: ";
 	cin >> input_polynom;
-	//cout << input_polynom << endl;
 
 	cout << "   Entered polynomial: " << polynomialToString(input_polynom) << endl << endl;
 	
@@ -124,7 +147,6 @@ bool PolynomialFactorization() {
 
 	ZZ_pEX convert_polynom;
 	conv(convert_polynom, input_polynom);
-	//cout << convert_polynom << " (Converted)" << endl;
 
 	//if (DetIrredTest(convert_polynom)) {
 	//if (ProbIrredTest(convert_polynom)) {
@@ -147,8 +169,18 @@ bool PolynomialFactorization() {
 
 void Help() {
 
-	cout << "\nHELP\n" << endl;
-	system("pause");
+	cout << "\n   -------------------------------------------------------------" << endl;
+	cout << "   ---------------------------- HELP ---------------------------\n" << endl << endl;
+	cout << "   Polynomials need to be entered in a format as shown below :" << endl << endl;
+	cout << "   x                       : [1]" << endl;
+	cout << "   x + 1                   : [1 1]" << endl;
+	cout << "   x2 + x + 1              : [1 1 1]" << endl;
+	cout << "   x3 + x2 + 1             : [1 0 1 1]" << endl;
+	cout << "   x3 + x + 1              : [1 1 0 1]" << endl;
+	cout << "   x4 + x3 + x2 + x + 1    : [1 1 1 1 1]" << endl;
+	cout << "   x4 + x3 + 1             : [1 0 0 1 1]" << endl;
+	cout << "   x4 + x + 1              : [1 1 0 0 1]" << endl;
+	cout << "   x5 + x4 + x3 + x2 + 1   : [1 0 1 1 1 1 1]" << endl;
 }
 
 void PrintMenu()
@@ -211,6 +243,10 @@ int main() {
    |                                                          |
    |               Viliam Alaksa, Martin Kubecka              |
    |                           2021                           |
+   |                                                          |
+   |          -------------------------------------           |
+   |                      Source code :                       |
+   |  www.github.com/martinkubecka/Polynomial-Factorization   |                                            
    |__________________________________________________________|
 )" << '\n';
 
