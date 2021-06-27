@@ -26,3 +26,4 @@
 ---
 ## :running: Running Polynomial-Factorization
 
+Launch the application by running **PolynomialFactorization.exe**, which you can download from the [releases](https://github.com/martinkubecka/Polynomial-Factorization/releases).
